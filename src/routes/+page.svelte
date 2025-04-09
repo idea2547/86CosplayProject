@@ -249,7 +249,7 @@
         <a href="/tutorials" class="block px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">TUTORIALS</a>
         <a href="/events" class="block px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">EVENTS</a>
         <a href="/community" class="block px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">COMMUNITY</a>
-        <a href="/join" class="block px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">JOIN</a>
+        <a href="/" class="block px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">JOIN</a>
       </div>
     </div>
   {/if}
@@ -306,7 +306,7 @@
 
         <!-- Military-style Action Buttons -->
         <div class="flex flex-wrap gap-4 mb-12">
-          <a href="/join" 
+          <a href="/" 
             class="group inline-flex items-center bg-red-800/80 text-white px-8 py-4 rounded border-l-4 border-red-500 font-mono text-xl tracking-wider hover:bg-red-700/80 transition-all transform hover:translate-x-1 duration-200">
             ENLIST NOW
             <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -493,7 +493,7 @@
         <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
           Become part of our growing community of cosplayers and bring your favorite 86 characters to life.
         </p>
-        <a href="/join" 
+        <a href="/" 
           class="inline-flex items-center bg-red-800 text-white px-8 py-4 rounded-lg text-xl font-bold hover:bg-red-700 transition-all transform hover:scale-105 duration-200 shadow-[0_0_30px_rgba(128,0,0,0.3)]">
           Join Now
           <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
