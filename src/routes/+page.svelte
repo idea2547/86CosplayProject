@@ -110,6 +110,25 @@
 </svelte:head>
 
 <style>
+  /* Add smooth scroll behavior */
+  :global(html) {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  /* Ensure full viewport height */
+  :global(body) {
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Prevent image flickering during load */
+  img {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+  }
+
   .hero-gradient {
     background: linear-gradient(135deg, rgba(20, 20, 25, 0.95) 0%, rgba(128, 0, 0, 0.95) 100%);
   }
@@ -237,20 +256,23 @@
 </nav>
 
 <!-- Hero Section -->
-<main class="relative min-h-screen bg-black">
+<main class="relative min-h-screen bg-black overflow-hidden">
   <!-- Background Image with Overlay -->
-  <div class="absolute inset-0">
+  <div class="absolute inset-0 w-full h-screen">
     <img 
       src="https://images.alphacoders.com/132/thumb-1920-1320767.jpeg" 
       alt="86 EIGHTY-SIX Background" 
-      class="w-full h-full object-cover"
+      class="absolute w-full h-full object-cover object-center"
+      style="min-height: 100vh; transform: scale(1.02);"
     />
-    <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+    <!-- Gradient Overlays for better text readability -->
+    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/80"></div>
   </div>
 
   <!-- Red Target Circle Decoration -->
-  <div class="absolute top-20 left-20 w-24 h-24">
+  <div class="absolute top-[15vh] left-[10vw] w-24 h-24 opacity-60">
     <div class="absolute w-full h-full border-2 border-red-600/30 rounded-full animate-ping"></div>
     <div class="absolute w-full h-full border border-red-600/50 rounded-full"></div>
     <div class="absolute top-1/2 left-1/2 w-2 h-2 bg-red-600 rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
