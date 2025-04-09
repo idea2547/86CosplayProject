@@ -1,114 +1,74 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  interface Project {
+  interface CosplayTeam {
     id: number;
-    title: string;
+    name: string;
     description: string;
     image: string;
-    tags: string[];
-    steamUrl: string;
-    student: {
+    characters: string[];
+    socialUrl: string;
+    leader: {
       name: string;
       avatar: string;
-      graduationYear: number;
+      role: string;
     };
     stats: {
-      downloads: number;
-      rating: number;
-      reviews: number;
+      followers: number;
+      events: number;
+      photoshoots: number;
     };
     featured: boolean;
     category: string;
   }
 
   const categories = [
-    { id: 'all', name: 'All Projects' },
-    { id: 'games', name: 'Games' },
-    { id: 'film', name: 'Film & Animation' },
-    { id: 'vfx', name: 'Visual Effects' },
+    { id: 'all', name: 'All Teams' },
+    { id: 'spearhead', name: 'Spearhead Squadron' },
+    { id: 'nordlicht', name: 'Nordlicht Squadron' },
+    { id: 'federacy', name: 'Federacy Units' },
   ];
 
-  const projects = [
+  const teams = [
     {
       id: 1,
-      title: "Stellar Quest",
-      description: "A space exploration RPG featuring dynamic combat and procedurally generated worlds.",
-      image: "/portfolio/stellar-quest.jpg",
-      tags: ["Lumen Lighting", "Procedural Generation", "Combat System"],
-      steamUrl: "https://store.steampowered.com/stellar-quest",
-      student: {
-        name: "Alex Chen",
-        avatar: "/students/alex.jpg",
-        graduationYear: 2023
+      name: "Spearhead Cosplay Unit",
+      description: "Dedicated to bringing the Spearhead Squadron characters to life with screen-accurate costumes and props.",
+      image: "/teams/spearhead-team.jpg",
+      characters: ["Shinei Nouzen", "Raiden Shuga", "Theoto Rikka"],
+      socialUrl: "https://instagram.com/spearhead-cosplay",
+      leader: {
+        name: "Shin",
+        avatar: "/members/shin.jpg",
+        role: "Squadron Leader"
       },
       stats: {
-        downloads: 25000,
-        rating: 4.8,
-        reviews: 450
+        followers: 2500,
+        events: 12,
+        photoshoots: 45
       },
       featured: true,
-      category: "games"
+      category: "spearhead"
     },
     {
       id: 2,
-      title: "The Last Journey",
-      description: "An emotional short film created entirely in Unreal Engine 5, showcasing next-gen virtual production.",
-      image: "/portfolio/last-journey.jpg",
-      tags: ["Virtual Production", "MetaHumans", "Ray Tracing"],
-      steamUrl: "https://vimeo.com/last-journey",
-      student: {
-        name: "Sarah Johnson",
-        avatar: "/students/sarah.jpg",
-        graduationYear: 2023
+      name: "Nordlicht Cosplay Squad",
+      description: "Specializing in the Federacy era costumes and military uniforms of the 86 series.",
+      image: "/teams/nordlicht-team.jpg",
+      characters: ["Vladilena Milizé", "Ernst Zimmerman", "Grethe Wenzel"],
+      socialUrl: "https://instagram.com/nordlicht-cosplay",
+      leader: {
+        name: "Lena",
+        avatar: "/members/lena.jpg",
+        role: "Handler One"
       },
       stats: {
-        downloads: 18000,
-        rating: 4.6,
-        reviews: 320
+        followers: 1800,
+        events: 8,
+        photoshoots: 32
       },
       featured: true,
-      category: "film"
-    },
-    {
-      id: 3,
-      title: "Dragon Realm",
-      description: "An open-world adventure featuring dynamic weather and realistic environments.",
-      image: "/portfolio/dragon-realm.jpg",
-      tags: ["Nanite", "World Building", "Physics System"],
-      steamUrl: "https://store.steampowered.com/dragon-realm",
-      student: {
-        name: "Michael Park",
-        avatar: "/students/michael.jpg",
-        graduationYear: 2023
-      },
-      stats: {
-        downloads: 22000,
-        rating: 4.7,
-        reviews: 380
-      },
-      featured: true,
-      category: "games"
-    },
-    {
-      id: 4,
-      title: "Neon City VFX",
-      description: "A stunning VFX reel showcasing advanced particle systems and environmental effects.",
-      image: "/portfolio/neon-city.jpg",
-      tags: ["Niagara VFX", "Volumetrics", "Sequencer"],
-      steamUrl: "https://vimeo.com/neon-city",
-      student: {
-        name: "Emily Zhang",
-        avatar: "/students/emily.jpg",
-        graduationYear: 2023
-      },
-      stats: {
-        downloads: 15000,
-        rating: 4.9,
-        reviews: 280
-      },
-      featured: true,
-      category: "vfx"
+      category: "nordlicht"
     }
   ];
 
@@ -116,30 +76,19 @@
   let isLoading = false;
   let visibleCount = 6;
 
-  $: filteredProjects = selectedCategory === 'all'
-    ? projects
-    : projects.filter(p => p.category === selectedCategory);
+  $: filteredTeams = selectedCategory === 'all'
+    ? teams
+    : teams.filter(p => p.category === selectedCategory);
 
-  $: displayedProjects = filteredProjects.slice(0, visibleCount);
+  $: displayedTeams = filteredTeams.slice(0, visibleCount);
 
   let isMenuOpen = false;
   let isScrolled = false;
 
-  // Navigation items
-  const navItems = [
-    { name: 'Home', href: '/' },
-    { name: 'Courses', href: '/courses' },
-    { name: 'Portfolio', href: '/portfolio' },
-    { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/contact' }
-  ];
-
-  // Handle mobile menu
   function toggleMenu() {
     isMenuOpen = !isMenuOpen;
   }
 
-  // Handle scroll events
   onMount(() => {
     const handleScroll = () => {
       isScrolled = window.scrollY > 50;
@@ -152,13 +101,6 @@
   function selectCategory(categoryId: string) {
     selectedCategory = categoryId;
     visibleCount = 6;
-  }
-
-  async function loadMore() {
-    isLoading = true;
-    await new Promise(resolve => setTimeout(resolve, 500)); // Simulate loading
-    visibleCount += 6;
-    isLoading = false;
   }
 </script>
 
@@ -214,7 +156,7 @@
     position: relative;
     color: #ffffff;
     text-decoration: none;
-    padding: 0.5rem 1rem;
+    font-family: monospace;
   }
 
   .nav-86 a::after {
@@ -224,8 +166,8 @@
     left: 50%;
     transform: translateX(-50%);
     width: 0;
-    height: 2px;
-    background-color: #800000;
+    height: 1px;
+    background-color: #ef4444;
     transition: width 0.3s ease;
   }
 
@@ -235,95 +177,156 @@
 </style>
 
 <!-- Navigation -->
-<nav class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-red-900/20">
+<nav class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-red-500/20">
   <div class="max-w-7xl mx-auto px-4">
     <div class="flex justify-between items-center h-20">
-      <div class="flex items-center">
-        <img src="/logo-86.png" alt="86 Cosplay Project" class="h-12 w-auto" />
-      </div>
-      
-      <div class="hidden md:flex nav-86 space-x-8">
-        <a href="/news">NEWS</a>
-        <a href="/characters">CHARACTERS</a>
-        <a href="/gallery">GALLERY</a>
-        <a href="/events">EVENTS</a>
-        <a href="/community">COMMUNITY</a>
+      <div class="flex items-center gap-8">
+        <!-- Logo -->
+        <div class="relative w-16 h-16 flex items-center">
+          <span class="text-4xl font-bold text-white tracking-widest font-mono">86</span>
+          <div class="absolute inset-0 border border-red-500/20 rounded"></div>
+          <div class="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-red-500"></div>
+          <div class="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-red-500"></div>
+          <div class="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-red-500"></div>
+          <div class="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-red-500"></div>
+        </div>
+
+        <!-- Primary Navigation -->
+        <div class="hidden md:flex nav-86 space-x-1">
+          <a href="/overview" class="px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">OVERVIEW</a>
+          <a href="/costumes" class="px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">COSTUMES</a>
+          <a href="/props" class="px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">PROPS</a>
+          <a href="/gallery" class="px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">GALLERY</a>
+          <a href="/tutorials" class="px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">TUTORIALS</a>
+        </div>
       </div>
 
+      <!-- Secondary Navigation -->
+      <div class="hidden md:flex nav-86 space-x-1">
+        <a href="/events" class="px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">EVENTS</a>
+        <a href="/community" class="px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">COMMUNITY</a>
+        <a href="/join" class="px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">JOIN</a>
+      </div>
+
+      <!-- Mobile Menu Button -->
       <button class="md:hidden" on:click={toggleMenu}>
-        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"/>
-        </svg>
+        <div class="w-6 h-6 flex flex-col justify-center items-center gap-1.5">
+          <span class="w-full h-px bg-red-500"></span>
+          <span class="w-full h-px bg-red-500"></span>
+          <span class="w-full h-px bg-red-500"></span>
+        </div>
       </button>
     </div>
   </div>
+
+  <!-- Mobile Menu -->
+  {#if isMenuOpen}
+    <div class="md:hidden bg-black/95 border-t border-red-500/20">
+      <div class="px-4 py-6 space-y-4">
+        <a href="/overview" class="block px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">OVERVIEW</a>
+        <a href="/costumes" class="block px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">COSTUMES</a>
+        <a href="/props" class="block px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">PROPS</a>
+        <a href="/gallery" class="block px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">GALLERY</a>
+        <a href="/tutorials" class="block px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">TUTORIALS</a>
+        <a href="/events" class="block px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">EVENTS</a>
+        <a href="/community" class="block px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">COMMUNITY</a>
+        <a href="/join" class="block px-4 py-2 text-sm tracking-[0.2em] hover:text-red-500 transition-colors">JOIN</a>
+      </div>
+    </div>
+  {/if}
 </nav>
 
 <!-- Hero Section -->
 <main class="relative min-h-screen bg-black">
-  <div class="absolute inset-0 bg-gradient-to-b from-red-900/5 via-black to-black mix-blend-multiply"></div>
+  <!-- Background Image with Overlay -->
   <div class="absolute inset-0">
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(128,0,0,0.1),transparent_50%)]"></div>
+    <img 
+      src="https://images.alphacoders.com/132/thumb-1920-1320767.jpeg" 
+      alt="86 EIGHTY-SIX Background" 
+      class="w-full h-full object-cover"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+  </div>
+
+  <!-- Red Target Circle Decoration -->
+  <div class="absolute top-20 left-20 w-24 h-24">
+    <div class="absolute w-full h-full border-2 border-red-600/30 rounded-full animate-ping"></div>
+    <div class="absolute w-full h-full border border-red-600/50 rounded-full"></div>
+    <div class="absolute top-1/2 left-1/2 w-2 h-2 bg-red-600 rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
+    <div class="absolute top-1/2 left-0 w-full h-px bg-red-600/30"></div>
+    <div class="absolute top-0 left-1/2 w-px h-full bg-red-600/30"></div>
   </div>
 
   <div class="max-w-7xl mx-auto px-4 pt-32 pb-20 relative z-10">
     <div class="grid md:grid-cols-2 gap-12 items-center">
       <div>
+        <!-- Military-style Section Label -->
         <div class="inline-block">
-          <span class="text-red-600 font-mono text-sm tracking-wider mb-4 opacity-90 flex items-center">
-            <span class="inline-block w-12 h-[1px] bg-red-600 mr-4"></span>
-            86 COSPLAY PROJECT
+          <span class="text-red-500 font-mono text-sm tracking-[0.2em] mb-4 opacity-90 flex items-center">
+            <span class="inline-block w-12 h-[1px] bg-red-500 mr-4"></span>
+            OPERATION STATUS: ACTIVE
           </span>
         </div>
-        <h1 class="text-6xl md:text-7xl font-black mb-6 tracking-tight leading-none text-white">
+
+        <!-- Main Title with Military Typography -->
+        <h1 class="text-6xl md:text-7xl font-black mb-6 tracking-tight leading-none text-white font-mono">
           Join the
-          <span class="bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-500 block mt-2">
-            86 Squadron
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-red-800 block mt-2">
+            86 Cosplay Project
           </span>
         </h1>
         
-        <p class="text-xl mb-8 text-gray-400 max-w-xl leading-relaxed">
-          Bring the world of 86 EIGHTY-SIX to life through detailed cosplay, props, and community events. Share your passion for the series with fellow fans.
+        <p class="text-xl mb-8 text-gray-300 max-w-xl leading-relaxed font-mono">
+          死神は、居るべき場所へと呼ばれる<br>
+          <span class="text-sm text-gray-400">The Reaper is called to where they should be.</span>
         </p>
 
+        <!-- Military-style Action Buttons -->
         <div class="flex flex-wrap gap-4 mb-12">
           <a href="/join" 
-            class="group inline-flex items-center bg-red-800 text-white px-8 py-4 rounded-lg text-xl font-bold hover:bg-red-700 transition-all transform hover:scale-105 duration-200 shadow-[0_0_30px_rgba(128,0,0,0.3)]">
-            Join Now
+            class="group inline-flex items-center bg-red-800/80 text-white px-8 py-4 rounded border-l-4 border-red-500 font-mono text-xl tracking-wider hover:bg-red-700/80 transition-all transform hover:translate-x-1 duration-200">
+            ENLIST NOW
             <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </a>
           <a href="#gallery" 
-            class="inline-flex items-center bg-white/5 text-white px-8 py-4 rounded-lg text-xl font-bold hover:bg-white/10 transition-all border border-red-800/20 backdrop-blur-sm">
-            View Gallery
+            class="inline-flex items-center bg-black/50 text-white px-8 py-4 rounded border border-red-500/30 font-mono tracking-wider hover:bg-black/70 transition-all backdrop-blur-sm">
+            VIEW INTEL
           </a>
         </div>
 
+        <!-- Status Display -->
         <div class="flex flex-wrap gap-6">
-          <div class="flex items-center gap-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-lg border border-red-800/20">
-            <span class="text-red-500 font-semibold">Latest Event</span>
-            <span class="text-gray-400">86 Cosplay Gathering 2024</span>
+          <div class="flex items-center gap-3 bg-black/50 backdrop-blur-sm px-4 py-2 rounded border border-red-500/30">
+            <span class="text-red-500 font-mono tracking-wider">LATEST MISSION</span>
+            <span class="text-gray-400 font-mono">Operation Morpho</span>
           </div>
         </div>
       </div>
 
-      <div class="relative">
-        <img 
-          src="/hero-image.jpg" 
-          alt="86 EIGHTY-SIX Cosplay" 
-          class="rounded-lg shadow-2xl shadow-red-900/20 w-full"
-        />
-        <div class="absolute -bottom-4 -right-4 bg-black/80 backdrop-blur-sm p-4 rounded-lg border border-red-900/20">
-          <p class="text-white font-mono">Join our growing community of</p>
-          <p class="text-red-500 text-2xl font-bold">1,000+ Members</p>
+      <!-- Right Side Military Stats -->
+      <div class="relative hidden md:block">
+        <div class="absolute -top-10 -right-10 w-64 h-64 bg-red-500/5 rounded-full blur-3xl"></div>
+        <div class="relative bg-black/30 backdrop-blur-sm p-6 rounded-lg border border-red-500/20">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="text-center p-4 border border-red-500/20 rounded">
+              <div class="text-red-500 font-mono text-2xl font-bold">86</div>
+              <div class="text-gray-400 text-sm font-mono">SQUADRON ID</div>
+            </div>
+            <div class="text-center p-4 border border-red-500/20 rounded">
+              <div class="text-red-500 font-mono text-2xl font-bold">1000+</div>
+              <div class="text-gray-400 text-sm font-mono">PROCESSORS</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Platform Features -->
-  <div class="relative bg-gray-900 py-24">
+  <!-- <div class="relative bg-gray-900 py-24">
     <div class="max-w-7xl mx-auto px-4">
       <div class="grid md:grid-cols-3 gap-12">
         <div>
@@ -370,22 +373,22 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
-  <!-- Portfolio Section -->
-  <section id="showcase" class="py-24 bg-black relative">
+  <!-- Team Showcase Section -->
+  <section id="teams" class="py-24 bg-black relative">
     <div class="absolute inset-0">
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(64,233,233,0.05),transparent_50%)]"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(128,0,0,0.05),transparent_50%)]"></div>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 relative z-10">
       <div class="text-center mb-16">
         <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">
-          Creator
-          <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#40E9E9] to-[#40E9E9]/70">Hall of Fame</span>
+          Active
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-500">Cosplay Teams</span>
         </h2>
         <p class="text-xl text-gray-400 max-w-2xl mx-auto">
-          Discover amazing projects created by our students using Unreal Engine 5.
+          Meet our dedicated cosplay teams bringing the world of 86 to life.
         </p>
       </div>
 
@@ -394,8 +397,8 @@
           <button
             class="px-6 py-2 rounded-full text-lg font-medium transition-all
             {selectedCategory === category.id
-              ? 'bg-[#40E9E9] text-black'
-              : 'bg-white/5 text-gray-400 hover:bg-white/10 border border-[#40E9E9]/20'}"
+              ? 'bg-red-800 text-white'
+              : 'bg-white/5 text-gray-400 hover:bg-white/10 border border-red-800/20'}"
             on:click={() => selectCategory(category.id)}
           >
             {category.name}
@@ -405,25 +408,25 @@
 
       {#if visibleCount}
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {#each displayedProjects as project}
+          {#each displayedTeams as team}
             <div class="group relative">
-              <div class="absolute -inset-1 bg-gradient-to-r from-[#40E9E9] to-[#40E9E9]/50 rounded-xl opacity-0 group-hover:opacity-20 blur transition-all"></div>
-              <div class="relative bg-white/5 backdrop-blur-sm rounded-xl overflow-hidden border border-[#40E9E9]/20 group-hover:border-[#40E9E9]/40 transition-all">
-                <img src={project.image} alt={project.title} class="w-full aspect-video object-cover" />
+              <div class="absolute -inset-1 bg-gradient-to-r from-red-800 to-red-500 rounded-xl opacity-0 group-hover:opacity-20 blur transition-all"></div>
+              <div class="relative bg-white/5 backdrop-blur-sm rounded-xl overflow-hidden border border-red-900/20 group-hover:border-red-800/40 transition-all">
+                <img src={team.image} alt={team.name} class="w-full aspect-video object-cover" />
                 <div class="p-6">
                   <div class="flex items-center gap-4 mb-4">
-                    <img src={project.student.avatar} alt={project.student.name} class="w-10 h-10 rounded-full" />
+                    <img src={team.leader.avatar} alt={team.leader.name} class="w-10 h-10 rounded-full" />
                     <div>
-                      <h4 class="text-white font-medium">{project.student.name}</h4>
-                      <p class="text-gray-400 text-sm">{project.title}</p>
+                      <h4 class="text-white font-medium">{team.leader.name}</h4>
+                      <p class="text-gray-400 text-sm">{team.leader.role}</p>
                     </div>
                   </div>
-                  <h3 class="text-xl font-bold mb-2 text-white group-hover:text-[#40E9E9] transition-colors">{project.title}</h3>
-                  <p class="text-gray-400 mb-4">{project.description}</p>
+                  <h3 class="text-xl font-bold mb-2 text-white group-hover:text-red-500 transition-colors">{team.name}</h3>
+                  <p class="text-gray-400 mb-4">{team.description}</p>
                   <div class="flex flex-wrap gap-2 mb-4">
-                    {#each project.tags as tag}
-                      <span class="px-3 py-1 rounded-full text-sm font-medium bg-[#40E9E9]/10 text-[#40E9E9] border border-[#40E9E9]/20">
-                        {tag}
+                    {#each team.characters as character}
+                      <span class="px-3 py-1 rounded-full text-sm font-medium bg-red-900/10 text-red-400 border border-red-900/20">
+                        {character}
                       </span>
                     {/each}
                   </div>
@@ -431,65 +434,46 @@
                     <div class="flex items-center gap-4">
                       <span class="flex items-center gap-1">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
-                        {project.stats.downloads}
+                        {team.stats.followers}
                       </span>
                       <span class="flex items-center gap-1">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
-                        {project.stats.rating}
+                        {team.stats.events}
                       </span>
                     </div>
-                    <a href={project.steamUrl} target="_blank" rel="noopener" class="text-[#40E9E9] hover:underline">View Project →</a>
+                    <a href={team.socialUrl} target="_blank" rel="noopener" class="text-red-500 hover:underline">View Team →</a>
                   </div>
                 </div>
               </div>
             </div>
           {/each}
         </div>
-
-        {#if filteredProjects.length < displayedProjects.length}
-          <div class="text-center mt-12">
-            <button
-              class="inline-flex items-center gap-2 bg-white/5 text-white px-8 py-4 rounded-lg text-xl font-bold hover:bg-white/10 transition-all border border-[#40E9E9]/20 backdrop-blur-sm disabled:opacity-50 disabled:cursor-not-allowed"
-              on:click={loadMore}
-              disabled={isLoading}
-            >
-              {#if isLoading}
-                <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-              {:else}
-                Load More Projects
-              {/if}
-            </button>
-          </div>
-        {/if}
       {/if}
     </div>
   </section>
 
-  <!-- CTA Section -->
+  <!-- Join CTA Section -->
   <section class="py-24 bg-black relative">
     <div class="absolute inset-0">
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(64,233,233,0.1),transparent_50%)]"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(128,0,0,0.1),transparent_50%)]"></div>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 relative z-10">
-      <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-12 border border-[#40E9E9]/20 text-center">
+      <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-12 border border-red-900/20 text-center">
         <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">
-          Ready to Start Your
-          <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#40E9E9] to-[#40E9E9]/70">Creative Journey?</span>
+          Ready to Join the
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-red-800 to-red-500">86 Squadron?</span>
         </h2>
         <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
-          Join our community of creators and build amazing games and films with Unreal Engine 5.
+          Become part of our growing community of cosplayers and bring your favorite 86 characters to life.
         </p>
-        <a href="/apply" 
-          class="inline-flex items-center bg-[#40E9E9] text-black px-8 py-4 rounded-lg text-xl font-bold hover:bg-[#40E9E9]/90 transition-all transform hover:scale-105 duration-200 shadow-[0_0_30px_rgba(64,233,233,0.3)]">
-          Apply Now
+        <a href="/join" 
+          class="inline-flex items-center bg-red-800 text-white px-8 py-4 rounded-lg text-xl font-bold hover:bg-red-700 transition-all transform hover:scale-105 duration-200 shadow-[0_0_30px_rgba(128,0,0,0.3)]">
+          Join Now
           <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
           </svg>
@@ -498,3 +482,104 @@
     </div>
   </section>
 </main>
+
+<!-- Project Overview Section -->
+<section class="py-24 bg-black/80 relative">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="grid md:grid-cols-2 gap-12">
+      <!-- Project Description -->
+      <div>
+        <h2 class="text-3xl font-bold mb-6 text-white font-mono">PROJECT OVERVIEW</h2>
+        <div class="space-y-4 text-gray-300">
+          <p>The 86 Cosplay Project is a community initiative dedicated to bringing the world of 86 EIGHTY-SIX to life through detailed costume recreation and prop making.</p>
+          <p>Our mission is to honor the series' military authenticity while creating opportunities for fans to embody their favorite characters.</p>
+        </div>
+        
+        <!-- Project Stats -->
+        <div class="grid grid-cols-3 gap-4 mt-8">
+          <div class="bg-black/50 p-4 rounded border border-red-500/20">
+            <div class="text-red-500 font-mono text-2xl">20+</div>
+            <div class="text-gray-400 text-sm">Active Cosplayers</div>
+          </div>
+          <div class="bg-black/50 p-4 rounded border border-red-500/20">
+            <div class="text-red-500 font-mono text-2xl">15</div>
+            <div class="text-gray-400 text-sm">Costume Guides</div>
+          </div>
+          <div class="bg-black/50 p-4 rounded border border-red-500/20">
+            <div class="text-red-500 font-mono text-2xl">10</div>
+            <div class="text-gray-400 text-sm">Prop Tutorials</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured Categories -->
+      <div class="grid grid-cols-2 gap-4">
+        <a href="/costumes" class="group relative overflow-hidden rounded-lg">
+          <div class="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-all"></div>
+          <img src="/categories/uniforms.jpg" alt="Military Uniforms" class="w-full h-48 object-cover" />
+          <div class="absolute bottom-0 left-0 right-0 p-4">
+            <h3 class="text-white font-mono text-lg">MILITARY UNIFORMS</h3>
+            <p class="text-gray-300 text-sm">Detailed guides for Republic and Federacy uniforms</p>
+          </div>
+        </a>
+        <a href="/props" class="group relative overflow-hidden rounded-lg">
+          <div class="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-all"></div>
+          <img src="/categories/props.jpg" alt="Military Props" class="w-full h-48 object-cover" />
+          <div class="absolute bottom-0 left-0 right-0 p-4">
+            <h3 class="text-white font-mono text-lg">MILITARY PROPS</h3>
+            <p class="text-gray-300 text-sm">Para-RAID devices and military equipment</p>
+          </div>
+        </a>
+        <a href="/tutorials" class="group relative overflow-hidden rounded-lg">
+          <div class="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-all"></div>
+          <img src="/categories/tutorials.jpg" alt="Cosplay Tutorials" class="w-full h-48 object-cover" />
+          <div class="absolute bottom-0 left-0 right-0 p-4">
+            <h3 class="text-white font-mono text-lg">TUTORIALS</h3>
+            <p class="text-gray-300 text-sm">Step-by-step guides for costumes and props</p>
+          </div>
+        </a>
+        <a href="/events" class="group relative overflow-hidden rounded-lg">
+          <div class="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-all"></div>
+          <img src="/categories/events.jpg" alt="Cosplay Events" class="w-full h-48 object-cover" />
+          <div class="absolute bottom-0 left-0 right-0 p-4">
+            <h3 class="text-white font-mono text-lg">EVENTS</h3>
+            <p class="text-gray-300 text-sm">Upcoming gatherings and photoshoots</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Latest Updates Section -->
+<section class="py-24 bg-black relative">
+  <div class="max-w-7xl mx-auto px-4">
+    <h2 class="text-3xl font-bold mb-12 text-white font-mono">LATEST UPDATES</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-black/50 rounded-lg border border-red-500/20 overflow-hidden">
+        <img src="/updates/new-guide.jpg" alt="New Costume Guide" class="w-full h-48 object-cover" />
+        <div class="p-6">
+          <div class="text-red-500 text-sm font-mono mb-2">2024.03.15</div>
+          <h3 class="text-white font-bold mb-2">New Costume Guide: Frederica Rosenfort</h3>
+          <p class="text-gray-400 text-sm">Complete breakdown of Frederica's Federacy uniform with pattern and material recommendations.</p>
+        </div>
+      </div>
+      <div class="bg-black/50 rounded-lg border border-red-500/20 overflow-hidden">
+        <img src="/updates/prop-tutorial.jpg" alt="Para-RAID Tutorial" class="w-full h-48 object-cover" />
+        <div class="p-6">
+          <div class="text-red-500 text-sm font-mono mb-2">2024.03.10</div>
+          <h3 class="text-white font-bold mb-2">Para-RAID Device Tutorial</h3>
+          <p class="text-gray-400 text-sm">Learn how to create screen-accurate Para-RAID devices using 3D printing and LEDs.</p>
+        </div>
+      </div>
+      <div class="bg-black/50 rounded-lg border border-red-500/20 overflow-hidden">
+        <img src="/updates/event-announcement.jpg" alt="Event Announcement" class="w-full h-48 object-cover" />
+        <div class="p-6">
+          <div class="text-red-500 text-sm font-mono mb-2">2024.03.05</div>
+          <h3 class="text-white font-bold mb-2">86 Squadron Gathering 2024</h3>
+          <p class="text-gray-400 text-sm">Join us for our annual cosplay gathering featuring photoshoots and workshops.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
